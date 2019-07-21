@@ -1,0 +1,22 @@
+# This is a template for creating a nuget based on .NET Core
+# Based on information at https://docs.microsoft.com/en-us/azure/devops/pipelines/process/templates?view=vsts
+
+parameters:
+    nugetProjectsPath: ''
+    buildConfiguration: 'Debug' # Not used yet, but we should build with this
+    number: 1
+
+steps:
+- task: DotNetCoreCLI@2
+  displayName: 'Nexus ${{parameters.number}}> dotnet restore'
+  inputs:
+    command: restore
+    projects: ${{parameters.nugetProjectsPath}}
+    feedsToUse: config
+    nugetConfigPath: NuGet.config
+    
+- task: DotNetCoreCLI@2
+  displayName: 'Nexus ${{parameters.number}}> dotnet pack'
+  inputs:
+    command: pack
+    packagesToPack: ${{parameters.nugetProjectsPath}}

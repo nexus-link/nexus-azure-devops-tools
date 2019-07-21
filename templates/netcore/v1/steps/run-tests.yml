@@ -1,0 +1,23 @@
+# Run .NET Core test projects
+
+parameters:
+    testProjectsPath: ''
+    number: 1
+    publishTestResults: false
+
+steps:
+- ${{ if ne(parameters.testProjectsPath, '') }}:
+  - task: DotNetCoreCLI@2
+    displayName: 'Nexus ${{parameters.number}}> dotnet restore'
+    inputs:
+      command: restore
+      projects: ${{parameters.testProjectsPath}}
+      feedsToUse: config
+      nugetConfigPath: NuGet.config
+  - task: DotNetCoreCLI@2
+    displayName: 'Nexus ${{parameters.number}}> dotnet test'
+    inputs:
+      command: test
+      projects: ${{parameters.testProjectsPath}}
+      publishTestResults: ${{parameters.publishTestResults}}
+

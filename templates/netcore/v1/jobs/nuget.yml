@@ -1,0 +1,23 @@
+# This is a template for creating a nuget based on .NET Core
+# Based on information at https://docs.microsoft.com/en-us/azure/devops/pipelines/process/templates?view=vsts
+
+parameters:
+  nugetProjectsPath: ''
+  testProjectsPath: ''
+  jobName: 'NuGet'
+  publishVstsFeed: ''
+
+jobs:
+- job: 'Nexus_${{parameters.jobName}}'
+  pool:
+    vm-image: 'ubuntu-latest'
+  steps:
+  - template: ../steps/run-tests.yml
+    parameters:
+      testProjectsPath: ${{parameters.testProjectsPath}}
+  - template: ../steps/pack-nuget.yml
+    parameters:
+      nugetProjectsPath: ${{parameters.nugetProjectsPath}}
+  - template: ../steps/push-nuget.yml
+    parameters:
+      publishVstsFeed: ${{parameters.publishVstsFeed}}

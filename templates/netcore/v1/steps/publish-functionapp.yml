@@ -1,0 +1,30 @@
+# This is a template for building and deploying a .NET Core app.
+
+parameters:
+  appProjectsPath: '**/*.csproj'
+  buildConfiguration: 'Debug'
+  number: 1
+
+steps:
+- task: DotNetCoreCLI@2
+  displayName: 'Nexus ${{parameters.number}}> dotnet restore'
+  inputs:
+    command: 'restore'
+    projects: ${{parameters.appProjectsPath}}
+    feedsToUse: 'config'
+    nugetConfigPath: 'NuGet.config'
+
+- task: DotNetCoreCLI@2
+  displayName: 'Nexus ${{parameters.number}}> dotnet publish functionapp'
+  inputs:
+    command: 'publish'
+    publishWebProjects: false
+    projects: ${{parameters.appProjectsPath}}
+    feedsToUse: 'config'
+    nugetConfigPath: 'NuGet.config'
+    arguments: '--no-restore --configuration ${{parameters.buildConfiguration}} --output $(Build.ArtifactStagingDirectory)'
+    modifyOutputPath: true
+    zipAfterPublish: true
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Nexus ${{parameters.number}}> Publish artifact'

@@ -1,0 +1,15 @@
+# This is a template for creating a nuget based on .NET Core
+# Based on information at https://docs.microsoft.com/en-us/azure/devops/pipelines/process/templates?view=vsts
+
+parameters:
+  publishVstsFeed: ''
+  number: 1
+
+steps:
+- task: DotNetCoreCLI@2
+  displayName: 'Nexus ${{parameters.number}}> dotnet push to nuget feed'
+  inputs:
+    command: push
+    packagesToPush: '$(Build.ArtifactStagingDirectory)/*.nupkg;!$(Build.ArtifactStagingDirectory)/*.symbols.nupkg'
+    publishVstsFeed: ${{parameters.publishVstsFeed}} # 
+  continueOnError: true

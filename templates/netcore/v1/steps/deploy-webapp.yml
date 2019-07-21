@@ -1,0 +1,18 @@
+# This is a template for building a function app and deploy it to azure
+
+parameters:
+    azureSubscription: ''
+    webAppName: ''
+    appSettings: ''
+    number: 1
+
+steps:
+- task: AzureRmWebAppDeployment@4
+  displayName: 'Nexus ${{parameters.number}}> AzureRM deploy'
+  inputs:
+    ConnectionType: 'AzureRM'
+    azureSubscription: ${{parameters.azureSubscription}}
+    appType: 'webApp'
+    WebAppName: ${{parameters.webAppName}}
+    packageForLinux: '$(Build.ArtifactStagingDirectory)/**/*.zip'
+    AppSettings: ${{parameters.appSettings}}

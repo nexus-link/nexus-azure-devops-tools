@@ -1,0 +1,28 @@
+# This is a template for building a function app and deploy it to azure
+
+parameters:
+    appProjectsPath: '**/*.csproj'
+    testProjectsPath: ''
+    jobName: 'FunctionApp'
+    azureSubscription: ''
+    webAppName: ''
+    appSettings: ''
+
+jobs:
+- job: 'Nexus_${{parameters.jobName}}'
+  pool:
+    vm-image: 'windows-latest'
+  steps:
+  - template: ../steps/run-tests.yml
+    parameters:
+      testProjectsPath: ${{parameters.testProjectsPath}}
+  - template: ../steps/publish-functionapp.yml
+    parameters:
+      appProjectsPath: ${{parameters.appProjectsPath}}
+      buildConfiguration: 'Debug'
+  - template: ../steps/deploy-functionapp.yml
+    parameters:
+      azureSubscription: ${{parameters.azureSubscription}}
+      webAppName: ${{parameters.webAppName}}
+      appSettings: ${{parameters.appSettings}}
+ 
