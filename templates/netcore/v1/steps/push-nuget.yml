@@ -8,12 +8,22 @@ parameters:
   number: 1
 
 steps:
-- task: DotNetCoreCLI@2
-  displayName: 'Nexus ${{parameters.number}}> dotnet push to internal nuget feed'
-  continueOnError: true
-  inputs:
-    command: push
-    packagesToPush: '$(Build.ArtifactStagingDirectory)/*.nupkg;!$(Build.ArtifactStagingDirectory)/*.symbols.nupkg'
-    nuGetFeedType: ${{parameters.nuGetFeedType}}
-    publishFeedCredentials: ${{parameters.publishFeedCredentials}}
-    publishVstsFeed: ${{parameters.publishVstsFeed}}
+- ${{ if eq(parameters.nuGetFeedType, 'internal') }}:
+  - task: DotNetCoreCLI@2
+    displayName: 'Nexus ${{parameters.number}}> dotnet push to ${{parameters.nuGetFeedType}} nuget feed'
+    continueOnError: true
+    inputs:
+      command: push
+      packagesToPush: '$(Build.ArtifactStagingDirectory)/*.nupkg;!$(Build.ArtifactStagingDirectory)/*.symbols.nupkg'
+      nuGetFeedType: ${{parameters.nuGetFeedType}}
+      publishVstsFeed: ${{parameters.publishVstsFeed}}
+
+- ${{ if eq(parameters.nuGetFeedType, 'external') }}:
+  - task: NuGetCommand@2
+    displayName: 'NuGet command push to ${{parameters.nuGetFeedType}} nuget feed'
+    inputs:
+      command: push
+      packagesToPush: '$(Build.ArtifactStagingDirectory)/*.nupkg;!$(Build.ArtifactStagingDirectory)/*.symbols.nupkg'
+      nuGetFeedType: ${{parameters.nuGetFeedType}}
+      publishFeedCredentials: ${{parameters.publishFeedCredentials}}
+    continueOnError: true
