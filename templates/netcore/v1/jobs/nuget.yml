@@ -5,7 +5,9 @@ parameters:
   nugetProjectsPath: ''
   testProjectsPath: ''
   jobName: 'NuGet'
-  publishVstsFeed: ''
+  nuGetFeedType: 'internal' # internal or external
+  publishVstsFeed: '' # Required for internal. A guid
+  publishFeedCredentials: '' # Required for external. A service connection.
 
 jobs:
 - job: 'Nexus_${{parameters.jobName}}'
@@ -20,4 +22,6 @@ jobs:
       nugetProjectsPath: ${{parameters.nugetProjectsPath}}
   - template: ../steps/push-nuget.yml
     parameters:
+      nuGetFeedType: ${{parameters.nuGetFeedType}}
+      publishFeedCredentials: ${{parameters.publishFeedCredentials}}
       publishVstsFeed: ${{parameters.publishVstsFeed}}
