@@ -15,5 +15,5 @@ steps:
     command: push
     packagesToPush: '$(Build.ArtifactStagingDirectory)/*.nupkg;!$(Build.ArtifactStagingDirectory)/*.symbols.nupkg'
     nuGetFeedType: ${{parameters.nuGetFeedType}}
-    publishFeedCredentials: ${{publishFeedCredentials}}
+    publishFeedCredentials: ${{parameters.publishFeedCredentials}}
     publishVstsFeed: ${{parameters.publishVstsFeed}}
