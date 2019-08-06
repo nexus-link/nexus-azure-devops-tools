@@ -16,6 +16,13 @@ steps:
     nugetConfigPath: NuGet.config
     
 - task: DotNetCoreCLI@2
+  displayName: 'Nexus ${{parameters.number}}> dotnet build'
+  inputs:
+    command: build
+    arguments: '/p:SourceLinkCreate=true /v:n'
+    projects: ${{parameters.nugetProjectsPath}}
+    
+- task: DotNetCoreCLI@2
   displayName: 'Nexus ${{parameters.number}}> dotnet pack'
   inputs:
     command: pack

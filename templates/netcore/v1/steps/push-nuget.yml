@@ -9,6 +9,13 @@ parameters:
 
 steps:
 - ${{ if eq(parameters.nuGetFeedType, 'internal') }}:
+  # https://docs.microsoft.com/en-us/azure/devops/artifacts/symbols/setting-up-github-sourcelinking?view=azure-devops
+  - task: PublishSymbols@2
+    displayName: 'Nexus ${{parameters.number}}> Publish symbols for ${{parameters.nuGetFeedType}} nuget feed'
+    continueOnError: true
+    inputs:
+      searchPattern: '**/bin/**/*.pdb' 
+      symbolServerType: 'TeamServices'
   - task: DotNetCoreCLI@2
     displayName: 'Nexus ${{parameters.number}}> dotnet push to ${{parameters.nuGetFeedType}} nuget feed'
     continueOnError: true
@@ -19,6 +26,14 @@ steps:
       publishVstsFeed: ${{parameters.publishVstsFeed}}
 
 - ${{ if eq(parameters.nuGetFeedType, 'external') }}:
+  # https://docs.microsoft.com/en-us/azure/devops/artifacts/symbols/setting-up-github-sourcelinking?view=azure-devops
+  - task: PublishSymbols@2
+    displayName: 'Nexus ${{parameters.number}}> Publish symbols for ${{parameters.nuGetFeedType}} nuget feed'
+    continueOnError: true
+    inputs:
+      searchPattern: '**/bin/**/*.pdb' 
+      symbolServerType: 'FileShare'
+      compressSymbols: false
   - task: NuGetCommand@2
     displayName: 'NuGet command push to ${{parameters.nuGetFeedType}} nuget feed'
     inputs:
@@ -27,3 +42,4 @@ steps:
       nuGetFeedType: ${{parameters.nuGetFeedType}}
       publishFeedCredentials: ${{parameters.publishFeedCredentials}}
     continueOnError: true
+ 
