@@ -2,26 +2,26 @@
 # Based on information at https://docs.microsoft.com/en-us/azure/devops/pipelines/process/templates?view=vsts
 
 parameters:
-  nugetProjectsPath: ''
-  testProjectsPath: ''
-  jobName: 'NuGet'
-  nuGetFeedType: 'internal' # internal or external
-  publishVstsFeed: '' # Required for internal. A guid
-  publishFeedCredentials: '' # Required for external. A service connection.
+  nugetProjectsPath: ""
+  testProjectsPath: ""
+  jobName: "NuGet"
+  nuGetFeedType: "internal" # internal or external
+  publishVstsFeed: "" # Required for internal. A guid
+  publishFeedCredentials: "" # Required for external. A service connection.
 
 jobs:
-- job: 'Nexus_${{parameters.jobName}}'
-  pool:
-    vm-image: 'ubuntu-latest'
-  steps:
-  - template: ../steps/run-tests.yml
-    parameters:
-      testProjectsPath: ${{parameters.testProjectsPath}}
-  - template: ../steps/pack-nuget.yml
-    parameters:
-      nugetProjectsPath: ${{parameters.nugetProjectsPath}}
-  - template: ../steps/push-nuget.yml
-    parameters:
-      nuGetFeedType: ${{parameters.nuGetFeedType}}
-      publishFeedCredentials: ${{parameters.publishFeedCredentials}}
-      publishVstsFeed: ${{parameters.publishVstsFeed}}
+  - job: "Nexus_${{parameters.jobName}}"
+    pool:
+      vmImage: "windows-latest"
+    steps:
+      - template: ../steps/run-tests.yml
+        parameters:
+          testProjectsPath: ${{parameters.testProjectsPath}}
+      - template: ../steps/pack-nuget.yml
+        parameters:
+          nugetProjectsPath: ${{parameters.nugetProjectsPath}}
+      - template: ../steps/push-nuget.yml
+        parameters:
+          nuGetFeedType: ${{parameters.nuGetFeedType}}
+          publishFeedCredentials: ${{parameters.publishFeedCredentials}}
+          publishVstsFeed: ${{parameters.publishVstsFeed}}
