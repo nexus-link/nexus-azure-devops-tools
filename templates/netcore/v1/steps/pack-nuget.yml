@@ -17,3 +17,4 @@ steps:
     includesymbols: true
     includesource: true
     arguments: '/p:SourceLinkCreate=true /v:n'
+
