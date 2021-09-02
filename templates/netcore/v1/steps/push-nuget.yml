@@ -8,21 +8,21 @@ parameters:
   number: 1
 
 steps:
-- ${{ if eq(parameters.nuGetFeedType, 'internal') }}:
+- ${{ if parameters.publishVstsFeed }}:
   # https://docs.microsoft.com/en-us/azure/devops/artifacts/symbols/setting-up-github-sourcelinking?view=azure-devops
   - task: PublishSymbols@2
-    displayName: 'Nexus ${{parameters.number}}> Publish symbols for ${{parameters.nuGetFeedType}} nuget feed'
+    displayName: 'Nexus ${{parameters.number}}> Publish symbols for internal nuget feed'
     continueOnError: true
     inputs:
       searchPattern: '**/bin/**/*.pdb' 
       symbolServerType: 'TeamServices'
   - task: DotNetCoreCLI@2
-    displayName: 'Nexus ${{parameters.number}}> dotnet push to ${{parameters.nuGetFeedType}} nuget feed'
+    displayName: 'Nexus ${{parameters.number}}> dotnet push to internal nuget feed'
     continueOnError: true
     inputs:
       command: push
-      packagesToPush: '$(Build.ArtifactStagingDirectory)/*.nupkg;!$(Build.ArtifactStagingDirectory)/*.symbols.nupkg'
-      nuGetFeedType: ${{parameters.nuGetFeedType}}
+      packagesToPush: '$(Build.ArtifactStagingDirectory)/*.symbols.nupkg'
+      nuGetFeedType: internal
       publishVstsFeed: ${{parameters.publishVstsFeed}}
 
 - ${{ if eq(parameters.nuGetFeedType, 'external') }}:
@@ -38,7 +38,7 @@ steps:
     displayName: 'NuGet command push to ${{parameters.nuGetFeedType}} nuget feed'
     inputs:
       command: push
-      packagesToPush: '$(Build.ArtifactStagingDirectory)/*.nupkg;!$(Build.ArtifactStagingDirectory)/*.symbols.nupkg'
+      packagesToPush: '$(Build.ArtifactStagingDirectory)/*.symbols.nupkg'
       nuGetFeedType: ${{parameters.nuGetFeedType}}
       publishFeedCredentials: ${{parameters.publishFeedCredentials}}
     continueOnError: true

@@ -7,23 +7,13 @@ parameters:
     number: 1
 
 steps:
-- task: DotNetCoreCLI@2
-  displayName: 'Nexus ${{parameters.number}}> dotnet restore'
-  inputs:
-    command: restore
-    projects: ${{parameters.nugetProjectsPath}}
-    feedsToUse: config
-    nugetConfigPath: NuGet.config
-    
-- task: DotNetCoreCLI@2
-  displayName: 'Nexus ${{parameters.number}}> dotnet build'
-  inputs:
-    command: build
-    arguments: '/p:SourceLinkCreate=true /v:n'
-    projects: ${{parameters.nugetProjectsPath}}
-    
-- task: DotNetCoreCLI@2
+  - task: DotNetCoreCLI@2
   displayName: 'Nexus ${{parameters.number}}> dotnet pack'
   inputs:
     command: pack
     packagesToPack: ${{parameters.nugetProjectsPath}}
+    feedsToUse: config
+    nugetConfigPath: NuGet.config
+    includesymbols: true
+    includesource: true
+    arguments: '/p:SourceLinkCreate=true /v:n'
