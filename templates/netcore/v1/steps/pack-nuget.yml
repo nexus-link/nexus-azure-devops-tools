@@ -16,5 +16,5 @@ steps:
       nugetConfigPath: NuGet.config
       includesymbols: true
       includesource: true
-      arguments: '/p:SourceLinkCreate=true /v:n'
+      arguments: '/v:n'
 
