@@ -8,13 +8,13 @@ parameters:
 
 steps:
   - task: DotNetCoreCLI@2
-  displayName: 'Nexus ${{parameters.number}}> dotnet pack'
-  inputs:
-    command: pack
-    packagesToPack: ${{parameters.nugetProjectsPath}}
-    feedsToUse: config
-    nugetConfigPath: NuGet.config
-    includesymbols: true
-    includesource: true
-    arguments: '/p:SourceLinkCreate=true /v:n'
+    displayName: 'Nexus ${{parameters.number}}> dotnet pack'
+    inputs:
+      command: pack
+      packagesToPack: ${{parameters.nugetProjectsPath}}
+      feedsToUse: config
+      nugetConfigPath: NuGet.config
+      includesymbols: true
+      includesource: true
+      arguments: '/p:SourceLinkCreate=true /v:n'
 
