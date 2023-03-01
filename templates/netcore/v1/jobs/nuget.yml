@@ -10,7 +10,16 @@ parameters:
   publishFeedCredentials: '' # Required for external. A service connection.
 
 jobs:
-- job: 'Nexus_${{parameters.jobName}}'
+- job: 'PR_${{parameters.jobName}}'
+  condition: eq(variables['Build.Reason'], 'PullRequest')
+  pool:
+    vm-image: 'ubuntu-latest'
+  steps:
+  - template: ../steps/run-tests.yml
+    parameters:
+      testProjectsPath: ${{parameters.testProjectsPath}}
+- job: 'CI_${{parameters.jobName}}'
+  condition: ne(variables['Build.Reason'], 'PullRequest')
   pool:
     vm-image: 'ubuntu-latest'
   steps:

@@ -9,7 +9,16 @@ parameters:
     appSettings: ''
 
 jobs:
-- job: 'Nexus_${{parameters.jobName}}'
+- job: 'PR_${{parameters.jobName}}'
+  condition: eq(variables['Build.Reason'], 'PullRequest')
+  pool:
+    vm-image: 'windows-latest'
+  steps:
+  - template: ../steps/run-tests.yml
+    parameters:
+      testProjectsPath: ${{parameters.testProjectsPath}}
+- job: 'CI_${{parameters.jobName}}'
+  condition: ne(variables['Build.Reason'], 'PullRequest')
   pool:
     vm-image: 'windows-latest'
   steps:
@@ -17,10 +26,12 @@ jobs:
     parameters:
       testProjectsPath: ${{parameters.testProjectsPath}}
   - template: ../steps/publish-functionapp.yml
+    condition: and(succeeded(), ne(Build.Reason, 'PullRequest'))
     parameters:
       appProjectsPath: ${{parameters.appProjectsPath}}
       buildConfiguration: 'Debug'
   - template: ../steps/deploy-functionapp.yml
+    condition: and(succeeded(), ne(Build.Reason, 'PullRequest'))
     parameters:
       azureSubscription: ${{parameters.azureSubscription}}
       webAppName: ${{parameters.webAppName}}
