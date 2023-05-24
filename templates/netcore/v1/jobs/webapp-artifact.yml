@@ -1,0 +1,35 @@
+# This is a template for building a function app and make an artifact available
+
+parameters:
+    appProjectsPath: '**/*.csproj'
+    testProjectsPath: ''
+    jobName: 'WebApp'
+    azureSubscription: ''
+    webAppName: ''
+    appSettings: ''
+
+jobs:
+- job: 'PR_${{parameters.jobName}}'
+  condition: eq(variables['Build.Reason'], 'PullRequest')
+  pool:
+    vm-image: 'windows-latest'
+  steps:
+  - template: ../steps/run-tests.yml
+    parameters:
+      testProjectsPath: ${{parameters.testProjectsPath}}
+- job: 'CI_${{parameters.jobName}}'
+  condition: ne(variables['Build.Reason'], 'PullRequest')
+  pool:
+    vm-image: 'windows-latest'
+  steps:
+  - template: ../steps/run-tests.yml
+    parameters:
+      testProjectsPath: ${{parameters.testProjectsPath}}
+  - template: ../steps/run-tests.yml
+    parameters:
+      testProjectsPath: ${{parameters.testProjectsPath}}
+  - template: ../steps/publish-webapp-artifact.yml
+    parameters:
+      appProjectsPath: ${{parameters.appProjectsPath}}
+      buildConfiguration: 'Debug'
+
