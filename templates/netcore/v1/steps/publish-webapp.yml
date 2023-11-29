@@ -18,8 +18,8 @@ steps:
   displayName: 'Nexus ${{parameters.number}}> dotnet publish webapp'
   inputs:
     command: 'publish'
-    publishWebProjects: true
-    appProjectsPath: ${{parameters.appProjectsPath}}
+    publishWebProjects: false
+    projects: ${{parameters.appProjectsPath}}
     arguments: '--no-restore --configuration ${{parameters.buildConfiguration}} --output $(Build.ArtifactStagingDirectory)'
     modifyOutputPath: true
     zipAfterPublish: true
