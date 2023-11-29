@@ -19,7 +19,7 @@ steps:
   inputs:
     command: 'publish'
     publishWebProjects: true
-    projects: ${{parameters.appProjectsPath}}
+    appProjectsPath: ${{parameters.appProjectsPath}}
     arguments: '--no-restore --configuration ${{parameters.buildConfiguration}} --output $(Build.ArtifactStagingDirectory)'
     modifyOutputPath: true
     zipAfterPublish: true
