@@ -7,6 +7,7 @@ parameters:
     azureSubscription: ''
     webAppName: ''
     appSettings: ''
+    jsonFiles: ''
 
 jobs:
 - job: 'PR_${{parameters.jobName}}'
@@ -37,4 +38,5 @@ jobs:
       azureSubscription: ${{parameters.azureSubscription}}
       webAppName: ${{parameters.webAppName}}
       appSettings: ${{parameters.appSettings}}
+      jsonFiles: ${{parameters.jsonFiles}}
 
