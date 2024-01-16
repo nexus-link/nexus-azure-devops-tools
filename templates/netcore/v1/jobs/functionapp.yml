@@ -26,12 +26,12 @@ jobs:
     parameters:
       testProjectsPath: ${{parameters.testProjectsPath}}
   - template: ../steps/publish-functionapp.yml
-    condition: and(succeeded(), ne(Build.Reason, 'PullRequest'))
+    #condition: and(succeeded(), ne(Build.Reason, 'PullRequest'))
     parameters:
       appProjectsPath: ${{parameters.appProjectsPath}}
       buildConfiguration: 'Debug'
   - template: ../steps/deploy-functionapp.yml
-    condition: and(succeeded(), ne(Build.Reason, 'PullRequest'))
+    #condition: and(succeeded(), ne(Build.Reason, 'PullRequest'))
     parameters:
       azureSubscription: ${{parameters.azureSubscription}}
       webAppName: ${{parameters.webAppName}}
