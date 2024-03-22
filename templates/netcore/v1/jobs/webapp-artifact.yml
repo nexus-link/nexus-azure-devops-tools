@@ -1,12 +1,9 @@
-# This is a template for building a function app and make an artifact available
+# This is a template for building a web app and make an artifact available
 
 parameters:
     appProjectsPath: '**/*.csproj'
     testProjectsPath: ''
-    jobName: 'WebApp'
-    azureSubscription: ''
-    webAppName: ''
-    appSettings: ''
+    jobName: 'WebApp Artifact'
 
 jobs:
 - job: 'PR_${{parameters.jobName}}'

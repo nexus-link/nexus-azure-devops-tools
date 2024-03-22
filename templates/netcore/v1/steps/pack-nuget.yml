@@ -3,7 +3,7 @@
 
 parameters:
     nugetProjectsPath: ''
-    buildConfiguration: 'Debug' # Not used yet, but we should build with this
+    buildConfiguration: 'Debug'
     number: 1
 
 steps:
@@ -17,4 +17,5 @@ steps:
       includesymbols: true
       includesource: true
       arguments: '/v:n'
+      configuration: "$(buildConfiguration)"
 
