@@ -17,5 +17,5 @@ steps:
       includesymbols: true
       includesource: true
       arguments: '/v:n'
-      configuration: "$(buildConfiguration)"
+      configuration: ${{parameters.buildConfiguration}}
 
