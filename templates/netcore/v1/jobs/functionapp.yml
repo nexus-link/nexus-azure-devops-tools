@@ -12,7 +12,7 @@ jobs:
 - job: 'PR_${{parameters.jobName}}'
   condition: eq(variables['Build.Reason'], 'PullRequest')
   pool:
-    vm-image: 'windows-latest'
+    vmImage: 'windows-latest'
   steps:
   - template: ../steps/run-tests.yml
     parameters:
@@ -20,7 +20,7 @@ jobs:
 - job: 'CI_${{parameters.jobName}}'
   condition: ne(variables['Build.Reason'], 'PullRequest')
   pool:
-    vm-image: 'windows-latest'
+    vmImage: 'windows-latest'
   steps:
   - template: ../steps/run-tests.yml
     parameters:
